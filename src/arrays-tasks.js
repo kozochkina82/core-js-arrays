@@ -391,8 +391,8 @@ function generateOdds(len) {
  *   getElementByIndices(['one','two','three'], [2]) => 'three'  (arr[2])
  *   getElementByIndices([[[ 1, 2, 3]]], [ 0, 0, 1 ]) => 2        (arr[0][0][1])
  */
-function getElementByIndices(/* arr, indices */) {
-  throw new Error('Not implemented');
+function getElementByIndices(arr, indices) {
+  return indices.reduce((current, index) => current[index], arr);
 }
 
 /**
@@ -407,8 +407,17 @@ function getElementByIndices(/* arr, indices */) {
  *  getFalsyValuesCount([ -1, 'false', null, 0 ]) => 2
  *  getFalsyValuesCount([ null, undefined, NaN, false, 0, '' ]) => 6
  */
-function getFalsyValuesCount(/* arr */) {
-  throw new Error('Not implemented');
+function getFalsyValuesCount(arr) {
+  return arr.filter((item) => {
+    return (
+      item === false ||
+      item === 0 ||
+      item === '' ||
+      item === null ||
+      item === undefined ||
+      Number.isNaN(item)
+    );
+  }).length;
 }
 
 /**
@@ -429,8 +438,10 @@ function getFalsyValuesCount(/* arr */) {
  *                              [0,0,0,1,0],
  *                              [0,0,0,0,1]]
  */
-function getIdentityMatrix(/* n */) {
-  throw new Error('Not implemented');
+function getIdentityMatrix(n) {
+  return Array.from({ length: n }, (_, i) =>
+    Array.from({ length: n }, (el, j) => (i === j ? 1 : 0))
+  );
 }
 
 /**
@@ -444,8 +455,10 @@ function getIdentityMatrix(/* n */) {
  *    getIndicesOfOddNumbers([2, 4, 6, 8, 10]) => []
  *    getIndicesOfOddNumbers([11, 22, 33, 44, 55]) => [0, 2, 4]
  */
-function getIndicesOfOddNumbers(/* numbers */) {
-  throw new Error('Not implemented');
+function getIndicesOfOddNumbers(numbers) {
+  return numbers
+    .map((number, index) => (number % 2 !== 0 ? index : -1))
+    .filter((index) => index !== -1);
 }
 
 /**
@@ -458,8 +471,11 @@ function getIndicesOfOddNumbers(/* numbers */) {
  *    getHexRGBValues([ 0, 255, 16777215]) => [ '#000000', '#0000FF', '#FFFFFF' ]
  *    getHexRGBValues([]) => []
  */
-function getHexRGBValues(/* arr */) {
-  throw new Error('Not implemented');
+function getHexRGBValues(arr) {
+  return arr.map((number) => {
+    const hex = number.toString(16).toUpperCase().padStart(6, '0');
+    return `#${hex}`;
+  });
 }
 
 /**
@@ -492,8 +508,9 @@ function getMaxItems(arr, n) {
  *    findCommonElements(['a', 'b', 'c'], ['b', 'c', 'd']) => [ 'b', 'c' ]
  *    findCommonElements([1, 2, 3], ['a', 'b', 'c']) => []
  */
-function findCommonElements(/* arr1, arr2 */) {
-  throw new Error('Not implemented');
+function findCommonElements(arr1, arr2) {
+  const set2 = new Set(arr2);
+  return arr1.filter((element) => set2.has(element));
 }
 
 /**
@@ -507,8 +524,22 @@ function findCommonElements(/* arr1, arr2 */) {
  *    findLongestIncreasingSubsequence([3, 10, 2, 1, 20]) => longest is [3, 10] and [1, 20] => 2
  *    findLongestIncreasingSubsequence([50, 3, 10, 7, 40, 80]) => longest is [7, 40, 80] => 3
  */
-function findLongestIncreasingSubsequence(/* nums */) {
-  throw new Error('Not implemented');
+function findLongestIncreasingSubsequence(nums) {
+  if (nums.length === 0) return 0;
+  const result = nums.reduce(
+    (acc, num, i) => {
+      if (i > 0 && num > nums[i - 1]) {
+        acc.current += 1;
+        acc.max = Math.max(acc.max, acc.current);
+      } else {
+        acc.current = 1;
+      }
+      return acc;
+    },
+    { current: 1, max: 1 }
+  );
+
+  return result.max;
 }
 
 /**
@@ -571,8 +602,31 @@ function shiftArray(arr, n) {
  *   sortDigitNamesByNumericOrder([ 'nine','eight','nine','eight' ]) => [ 'eight','eight','nine','nine']
  *   sortDigitNamesByNumericOrder([ 'one','one','one','zero' ]) => [ 'zero','one','one','one' ]
  */
-function sortDigitNamesByNumericOrder(/* arr */) {
-  throw new Error('Not implemented');
+function sortDigitNamesByNumericOrder(arr) {
+  const zero = 0;
+  const one = 1;
+  const two = 2;
+  const three = 3;
+  const four = 4;
+  const five = 5;
+  const six = 6;
+  const seven = 7;
+  const eight = 8;
+  const nine = 9;
+
+  const digitMap = {
+    zero,
+    one,
+    two,
+    three,
+    four,
+    five,
+    six,
+    seven,
+    eight,
+    nine,
+  };
+  return [...arr].sort((a, b) => digitMap[a] - digitMap[b]);
 }
 
 /**
@@ -594,8 +648,14 @@ function sortDigitNamesByNumericOrder(/* arr */) {
  *   swapHeadAndTail([]) => []
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  if (arr.length <= 1) return [...arr];
+  const mid = Math.floor(arr.length / 2);
+  const isOdd = arr.length % 2 === 1;
+  const head = arr.slice(0, mid);
+  const tail = arr.slice(mid + (isOdd ? 1 : 0));
+  const middle = isOdd ? [arr[mid]] : [];
+  return [...tail, ...middle, ...head];
 }
 
 module.exports = {
